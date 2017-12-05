@@ -6,6 +6,13 @@ function Player(totalScore, runningScore, roll) {
 
 var whoseTurn = 1;
 
+var player1 = new Player(0, 0, 0);
+var player2 = new Player(0, 0, 0);
+
+var resetValues = function() {
+  player1.totalScore = 0;
+  player2.totalScore = 0;
+}
 
 var rollDice = function() {
   return Math.floor((Math.random() * 6) + 1);
@@ -23,6 +30,10 @@ Player.prototype.processRoll = function() {
 
 Player.prototype.hold = function() {
   this.totalScore += this.runningScore;
+  if (this.totalScore >= 100) {
+    alert("You are the winner!!!!");
+    resetValues();
+  }
   this.runningScore = 0;
   nextPlayer();
 }
@@ -49,8 +60,7 @@ var displayTurn = function() {
 };
 
 $(document).ready(function(){
-  var player1 = new Player(0, 0, 0);
-  var player2 = new Player(0, 0, 0);
+
 
   $("#roll-dice").click(function() {
     if(whoseTurn === 1) {
