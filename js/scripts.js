@@ -17,6 +17,7 @@ Player.prototype.processRoll = function() {
   this.roll = rollDice()
   if (this.roll === 1) {
     nextPlayer();
+    this.runningScore = 0;
   } else {
     this.runningScore += this.roll;
   }
@@ -30,14 +31,19 @@ var nextPlayer = function() {
   }
 };
 
+Player.prototype.displayResults = function() {
+  $("#roll-result").text(this.roll);
+  $("#running-score").text(this.runningScore);
+}
+
 $(document).ready(function(){
   $("#roll-dice").click(function() {
     if(whoseTurn === 1) {
       player1.processRoll();
-      $("#roll-result").text(player1.roll);
+      player1.displayResults();
     } else {
       player2.processRoll();
-      $("#roll-result").text(player2.roll);
+      player2.displayResults();
     }
 
     if (whoseTurn === 1) {
