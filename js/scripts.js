@@ -1,22 +1,25 @@
-function Player(score) {
-  this.score = score;
+function Player(totalScore, runningScore, roll) {
+  this.totalScore = totalScore;
+  this.runningScore = runningScore;
+  this.roll = roll;
 }
 
 var whoseTurn = 1;
 
-var player1 = new Player(0);
-var player2 = new Player(0);
+var player1 = new Player(0, 0, 0);
+var player2 = new Player(0, 0, 0);
 
 var rollDice = function() {
   return Math.floor((Math.random() * 6) + 1);
 }
 
 Player.prototype.processRoll = function() {
-  var roll = rollDice()
-  if (roll === 1) {
+  this.roll = rollDice()
+  if (this.roll === 1) {
     nextPlayer();
+  } else {
+    this.runningScore += this.roll;
   }
-  $("#roll-result").text(roll);
 }
 
 var nextPlayer = function() {
@@ -31,10 +34,12 @@ $(document).ready(function(){
   $("#roll-dice").click(function() {
     if(whoseTurn === 1) {
       player1.processRoll();
+      $("#roll-result").text(player1.roll);
     } else {
       player2.processRoll();
+      $("#roll-result").text(player2.roll);
     }
-    //$("#roll-result").text(rollDice());
+
     if (whoseTurn === 1) {
       $("#whose-turn").html("<h3>Player 1</h3>");
     } else {
