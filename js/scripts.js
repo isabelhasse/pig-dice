@@ -1,3 +1,5 @@
+// BUSINESS LOGIC ----------------------------------------------------
+
 function Player(totalScore, runningScore, roll) {
   this.totalScore = totalScore;
   this.runningScore = runningScore;
@@ -18,6 +20,14 @@ var rollDice = function() {
   return Math.floor((Math.random() * 6) + 1);
 }
 
+var nextPlayer = function() {
+  if (whoseTurn === 1) {
+    whoseTurn = 2;
+  } else {
+    whoseTurn = 1;
+  }
+};
+
 Player.prototype.processRoll = function() {
   this.roll = rollDice()
   if (this.roll === 1) {
@@ -37,40 +47,35 @@ Player.prototype.hold = function() {
   this.runningScore = 0;
   nextPlayer();
 }
-
-var nextPlayer = function() {
-  if (whoseTurn === 1) {
-    whoseTurn = 2;
-  } else {
-    whoseTurn = 1;
-  }
-};
-
-Player.prototype.displayResults = function() {
-  $("#roll-result").text(this.roll);
-  $("#running-score").text(this.runningScore);
-}
-
-var displayTurn = function() {
-  if (whoseTurn === 1) {
-    $("#whose-turn").text("Player One");
-  } else {
-    $("#whose-turn").text("Player Two")
-  }
-};
+// USER LOGIC ----------------------------------------------------------
 
 $(document).ready(function(){
+  $("#total1").text(player1.totalScore);
+  $("#total2").text(player2.totalScore);
 
+  var displayTurn = function() {
+    $("#player1").slideToggle();
+    $("#player2").slideToggle();
+  };
 
   $("#roll-dice").click(function() {
+    debugger;
     if(whoseTurn === 1) {
       player1.processRoll();
-      player1.displayResults();
+      $("#roll-result").text(player1.roll);
+      $("#running-score").text(player1.runningScore);
+      if(player1.roll === 1) {
+        displayTurn();
+      }
     } else {
       player2.processRoll();
-      player2.displayResults();
+      $("#roll-result").text(player2.roll);
+      $("#running-score").text(player2.runningScore);
+      if(player2.roll === 1) {
+        displayTurn();
+      }
     }
-    displayTurn();
+
   });
 
   $("#hold").click(function() {
