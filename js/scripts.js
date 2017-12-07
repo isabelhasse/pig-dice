@@ -58,8 +58,7 @@ $(document).ready(function(){
     $("#player2").slideToggle();
   };
 
-  $("#roll-dice").click(function() {
-    debugger;
+  var rollButton = function() {
     if(whoseTurn === 1) {
       player1.processRoll();
       $("#running-score").text(player1.runningScore);
@@ -71,9 +70,9 @@ $(document).ready(function(){
       displayTurn();
     }
     $("#roll-result").text(roll);
-  });
+  }
 
-  $("#hold").click(function() {
+  var holdButton = function() {
     if(whoseTurn === 1) {
       player1.hold();
     } else {
@@ -82,5 +81,23 @@ $(document).ready(function(){
     $("#total1").text(player1.totalScore);
     $("#total2").text(player2.totalScore);
     displayTurn();
+  }
+
+  $("#roll-dice").click(function() {
+    rollButton();
   });
+
+  $("#hold").click(function() {
+    holdButton();
+  });
+
+  $("#computer-turn").click(function() {
+    rollButton();
+    if (roll != 1) {
+      rollButton();
+    }
+    if (roll != 1) {
+      holdButton();
+    }
+  })
 });
