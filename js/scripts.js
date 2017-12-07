@@ -1,12 +1,12 @@
 // BUSINESS LOGIC ----------------------------------------------------
 
-function Player(totalScore, runningScore, roll) {
+function Player(totalScore, runningScore) {
   this.totalScore = totalScore;
   this.runningScore = runningScore;
-  this.roll = roll;
 }
 
 var whoseTurn = 1;
+var roll = 0;
 
 var player1 = new Player(0, 0, 0);
 var player2 = new Player(0, 0, 0);
@@ -29,12 +29,12 @@ var nextPlayer = function() {
 };
 
 Player.prototype.processRoll = function() {
-  this.roll = rollDice()
-  if (this.roll === 1) {
+  roll = rollDice()
+  if (roll === 1) {
     nextPlayer();
     this.runningScore = 0;
   } else {
-    this.runningScore += this.roll;
+    this.runningScore += roll;
   }
 }
 
@@ -62,20 +62,15 @@ $(document).ready(function(){
     debugger;
     if(whoseTurn === 1) {
       player1.processRoll();
-      $("#roll-result").text(player1.roll);
       $("#running-score").text(player1.runningScore);
-      if(player1.roll === 1) {
-        displayTurn();
-      }
     } else {
       player2.processRoll();
-      $("#roll-result").text(player2.roll);
       $("#running-score").text(player2.runningScore);
-      if(player2.roll === 1) {
-        displayTurn();
-      }
     }
-
+    if(roll === 1) {
+      displayTurn();
+    }
+    $("#roll-result").text(roll);
   });
 
   $("#hold").click(function() {
